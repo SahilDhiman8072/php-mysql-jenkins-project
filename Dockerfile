@@ -4,9 +4,9 @@ RUN apt-get update -y
 
 COPY carrental/* /var/www/html/
 
-RUN apt install default-mysql-client default-libmysqlclient-dev
+RUN apt install default-mysql-client default-libmysqlclient-dev -y
 
-RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql -y
 
 
 
