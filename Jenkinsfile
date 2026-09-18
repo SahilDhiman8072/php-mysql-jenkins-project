@@ -12,7 +12,7 @@ pipeline{
         }
         stage("build php image"){
             steps{
-                sh 'docker build -t $image_name:BUILD_NUMBER .'
+                sh 'docker build -t $image_name:$BUILD_NUMBER .'
             }
             post{
                 success{

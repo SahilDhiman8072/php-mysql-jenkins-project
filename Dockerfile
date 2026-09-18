@@ -6,7 +6,7 @@ COPY carrental/* /var/www/html/
 
 RUN apt install default-mysql-client default-libmysqlclient-dev -y
 
-RUN docker-php-ext-install pdo pdo_mysql -y
+RUN docker-php-ext-install pdo pdo_mysql 
 
 
 
