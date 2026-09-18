@@ -1,8 +1,6 @@
 FROM php:7.1-apache
 
-RUN apt update 
-
-RUN apt install apache2 -y
+RUN apt update -y
 
 COPY carrental/* /var/www/html/
 
