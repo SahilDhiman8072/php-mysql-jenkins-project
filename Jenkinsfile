@@ -48,12 +48,12 @@ pipeline{
         stage("php container run"){
             steps{
                 sh 'docker rm -f php-cont || true'
-                sh 'docekr run -d --name php-cont --network mynet -p 80:80 $image_name:$BUILD_NUMBER'
+                sh 'docker run -d --name php-cont --network mynet -p 80:80 $image_name:$BUILD_NUMBER'
             }
             post{
                 success{
                     sh 'docker ps'
-                    sh 'docker exec -i mysql mysql -uroot -p123 carrental < carrental.sql'
+                    sh 'docker exec -i mysql mysql -uroot -p123 carrental < carrental.sql || true'
                 }
             }
         }
