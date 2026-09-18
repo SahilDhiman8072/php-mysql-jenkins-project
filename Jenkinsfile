@@ -40,6 +40,7 @@ pipeline{
         }
         stage("mysql container run"){
             steps{
+                sh 'docker rm -f mysql || true'
                 sh 'docker run -d --name mysql -p 3306:3306 --network mynet -e MYSQL_ROOT_PASSWORD=123 -e MYSQL_DATABASE=carrental mysql'
             }
             post{
@@ -51,6 +52,7 @@ pipeline{
         
         stage("php container run"){
             steps{
+                sh 'docker rm -f php-cont || true'
                 sh 'docekr run -d --name php-cont --network mynet -p 80:80 $image_name:$BUILD_NUMBER'
             }
             post{
