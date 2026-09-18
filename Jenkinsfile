@@ -16,7 +16,7 @@ pipeline{
             }
             post{
                 success{
-                    docker images
+                   sh 'docker images'
                 }
             }
         }
