@@ -7,7 +7,7 @@ pipeline{
         stage("pull code form github")
         {
             steps{
-                git branch:'main',url:''
+                git branch:'main',url:'https://github.com/SahilDhiman8072/php-mysql-jenkins-project.git'
             }
         }
         stage("build php image"){
