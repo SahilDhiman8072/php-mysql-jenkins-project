@@ -43,11 +43,6 @@ pipeline{
                 sh 'docker rm -f mysql || true'
                 sh 'docker run -d --name mysql -p 3306:3306 --network mynet -e MYSQL_ROOT_PASSWORD=123 -e MYSQL_DATABASE=carrental mysql'
             }
-            post{
-                success{
-                    sh 'docker exec -i mysql mysql -uroot -p123 carrental < carrental.sql'
-                }
-            }
         }
         
         stage("php container run"){
@@ -58,6 +53,7 @@ pipeline{
             post{
                 success{
                     sh 'docker ps'
+                    sh 'docker exec -i mysql mysql -uroot -p123 carrental < carrental.sql'
                 }
             }
         }
