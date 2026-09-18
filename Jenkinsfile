@@ -35,7 +35,7 @@ pipeline{
         }
         stage("push to dockerhub"){
             steps{
-                sh 'docker push $image_name:$BUILD_NUMBER'
+                sh 'sudo -u jenkins docker push $image_name:$BUILD_NUMBER'
             }
         }
         stage("mysql container run"){
