@@ -12,7 +12,7 @@ pipeline{
         }
         stage("build php image"){
             steps{
-                sh 'docker build -t $image_name:$BUILD_NUMBER .'
+                sh 'docker compose build'
             }
             post{
                 success{
@@ -35,25 +35,38 @@ pipeline{
         }
         stage("push to dockerhub"){
             steps{
-                sh 'sudo -u jenkins docker push $image_name:$BUILD_NUMBER'
+                sh 'docker tag $image_name:latest $image_name:$BUILD_NUMBER'
+                sh 'docker push $image_name:$BUILD_NUMBER'
             }
         }
-        stage("mysql container run"){
+        stage("mysql and php container run"){
             steps{
-                sh 'docker rm -f mysql || true'
-                sh 'docker run -d --name mysql -p 3306:3306 --network mynet -e MYSQL_ROOT_PASSWORD=123 -e MYSQL_DATABASE=carrental mysql'
-            }
-        }
-        
-        stage("php container run"){
-            steps{
-                sh 'docker rm -f php-cont || true'
-                sh 'docker run -d --name php-cont --network mynet -p 80:80 $image_name:$BUILD_NUMBER'
+                sh '''
+                docker compose down || true
+                docker compose up -d 
+                '''
             }
             post{
                 success{
-                    sh 'docker ps'
-                    sh 'docker exec -i mysql mysql -uroot -p123 carrental < carrental.sql || true'
+                    echo "verify containers"
+                    sh 'docker compose ps'
+                }
+            }
+        }
+        stage("import mysqlfile to mysql container"){
+            steps{
+                sh '''
+                until docker exec mysql mysqladmin -uroot -p123 ping --silent
+                do
+                    echo "mysql not ready yet"
+                    sleep(3)
+                done
+                echo "mysql ready"
+                '''
+            }
+            post{
+                success{
+                    sh 'docker exec -i mysql mysql -uroot -p123 carrental < carrental.sql'
                 }
             }
         }

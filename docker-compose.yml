@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  myapp:
+    build: .
+    image: sahild42770/php-mysql-image
+    ports:
+      - "80:80"
+    networks:
+      - mynet
+    container_name: php-cont
+    depends_on:
+      - mydb
+
+  mydb:
+    image: mysql
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mynet
+    volumes:
+      - myvol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: carrental
+    
+networks:
+  mynet:
+volumes:
+  myvol:
