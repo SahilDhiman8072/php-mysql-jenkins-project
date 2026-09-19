@@ -59,7 +59,7 @@ pipeline{
                 until docker exec mysql mysqladmin -uroot -p123 ping --silent
                 do
                     echo "mysql not ready yet"
-                    sleep(3)
+                    sleep 3
                 done
                 echo "mysql ready"
                 '''
